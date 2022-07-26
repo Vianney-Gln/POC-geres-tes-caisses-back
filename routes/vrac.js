@@ -1,6 +1,6 @@
 const vracRouter = require("express").Router();
 // Models
-const { getStockVrac } = require("../models/vrac");
+const { getStockVrac, getCountVrac } = require("../models/vrac");
 
 // Route getting stock vrac
 vracRouter.get("/", (req, res) => {
@@ -17,5 +17,15 @@ vracRouter.get("/", (req, res) => {
       res.status(401).send("error request to get stock");
     });
 });
-
+// Route getting count "caisses vrac"
+vracRouter.get("/count", (req, res) => {
+  getCountVrac()
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(401).send("error request count");
+    });
+});
 module.exports = vracRouter;
