@@ -12,10 +12,18 @@ const getBoxInFagots = () => {
     .then((result) => result[0]);
 };
 
+/**
+ * Function getting the number of fagots
+ * @returns {promise}
+ */
 const getCountFagots = () => {
   return db
     .query("SELECT count(*) AS nbFagots from fagots")
     .then((result) => result[0][0]);
 };
 
-module.exports = { getBoxInFagots, getCountFagots };
+const getFagots = () => {
+  return db.query("SELECT * from fagots").then((result) => result[0]);
+};
+
+module.exports = { getBoxInFagots, getCountFagots, getFagots };
