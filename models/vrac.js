@@ -7,7 +7,9 @@ const db = connection.promise();
  */
 const getStockVrac = () => {
   return db
-    .query("SELECT * FROM caissesvrac WHERE id_fagot is NULL")
+    .query(
+      "SELECT caissesvrac.uuid,articles.name FROM caissesvrac INNER JOIN articles ON caissesvrac.id_article = articles.id WHERE id_fagot is NULL"
+    )
     .then((result) => result[0]);
 };
 
