@@ -30,4 +30,23 @@ const getFagots = () => {
     .then((result) => result[0]);
 };
 
-module.exports = { getBoxInFagots, getCountFagots, getFagots };
+/**
+ * Function getting boxes in a fagot
+ * @param {number} id
+ * @returns {promise}
+ */
+const getBoxesByFagotId = (id) => {
+  return db
+    .query(
+      "SELECT articles.name,caissesvrac.uuid AS idCaisse,fagots.uuid AS idFagot FROM caissesvrac INNER JOIN fagots ON caissesvrac.id_fagot = fagots.id INNER JOIN articles ON caissesvrac.id_article = articles.id WHERE caissesvrac.id_fagot = ? ORDER BY idCaisse ASC",
+      [id]
+    )
+    .then((result) => result[0]);
+};
+
+module.exports = {
+  getBoxInFagots,
+  getCountFagots,
+  getFagots,
+  getBoxesByFagotId,
+};
