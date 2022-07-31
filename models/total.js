@@ -10,7 +10,7 @@ const getTotalBoxes = () => {
 
 const getCountTotalBoxes = () => {
   return db
-    .query("SELECT count(*) FROM caissesvrac")
+    .query("SELECT count(*) AS numberTotal FROM caissesvrac")
     .then((result) => result[0][0]);
 };
 
