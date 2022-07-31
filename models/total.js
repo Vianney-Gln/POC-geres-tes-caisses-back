@@ -8,4 +8,10 @@ const getTotalBoxes = () => {
     .then((result) => result[0]);
 };
 
-module.exports = { getTotalBoxes };
+const getCountTotalBoxes = () => {
+  return db
+    .query("SELECT count(*) FROM caissesvrac")
+    .then((result) => result[0][0]);
+};
+
+module.exports = { getTotalBoxes, getCountTotalBoxes };

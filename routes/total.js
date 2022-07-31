@@ -1,5 +1,5 @@
 const totalRouter = require("express").Router();
-const { getTotalBoxes } = require("../models/total");
+const { getTotalBoxes, getCountTotalBoxes } = require("../models/total");
 
 totalRouter.get("/", (req, res) => {
   getTotalBoxes()
@@ -9,6 +9,16 @@ totalRouter.get("/", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(401).send("error retrieving boxes");
+    });
+});
+totalRouter.get("/count", (req, res) => {
+  getCountTotalBoxes()
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(401).send("error retrieving the number of boxes");
     });
 });
 
