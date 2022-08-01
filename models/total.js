@@ -3,7 +3,7 @@ const db = require("../db-config").promise();
 const getTotalBoxes = () => {
   return db
     .query(
-      "SELECT caissesvrac.uuid,articles.name,caissesvrac.id,fagots.uuid AS idFagot from caissesvrac INNER JOIN articles ON caissesvrac.id_article = articles.id INNER JOIN fagots ON caissesvrac.id_fagot = fagots.id ORDER BY caissesvrac.uuid ASC"
+      "SELECT caissesvrac.uuid,articles.name,caissesvrac.id_fagot AS idFagot from caissesvrac INNER JOIN articles ON caissesvrac.id_article = articles.id"
     )
     .then((result) => result[0]);
 };
