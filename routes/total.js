@@ -1,8 +1,8 @@
 const totalRouter = require("express").Router();
 const { getTotalBoxes, getCountTotalBoxes } = require("../models/total");
 
-totalRouter.get("/", (req, res) => {
-  getTotalBoxes()
+totalRouter.get("/:typeBoxes", (req, res) => {
+  getTotalBoxes(req.params.typeBoxes)
     .then((result) => {
       res.status(200).send(result);
     })
