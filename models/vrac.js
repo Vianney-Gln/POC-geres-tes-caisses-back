@@ -5,12 +5,15 @@ const db = connection.promise();
  * Function getting stock "vrac"
  * @returns {promise}
  */
-const getStockVrac = () => {
-  return db
-    .query(
-      "SELECT caissesvrac.uuid,articles.name FROM caissesvrac INNER JOIN articles ON caissesvrac.id_article = articles.id WHERE id_fagot is NULL"
-    )
-    .then((result) => result[0]);
+const getStockVrac = (query) => {
+  let sqlReq =
+    "SELECT caissesvrac.uuid,articles.name FROM caissesvrac INNER JOIN articles ON caissesvrac.id_article = articles.id WHERE id_fagot is NULL";
+  const arrayQuery = [];
+  if (query) {
+    sqlReq += " AND articles.id = ?";
+    arrayQuery.push(query);
+  }
+  return db.query(sqlReq, arrayQuery).then((result) => result[0]);
 };
 
 /**
