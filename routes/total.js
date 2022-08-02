@@ -1,8 +1,9 @@
 const totalRouter = require("express").Router();
 const { getTotalBoxes, getCountTotalBoxes } = require("../models/total");
 
-totalRouter.get("/:typeBoxes", (req, res) => {
-  getTotalBoxes(req.params.typeBoxes)
+// route getting total boxes - can be sorted by length
+totalRouter.get("/", (req, res) => {
+  getTotalBoxes(req.query.article)
     .then((result) => {
       res.status(200).send(result);
     })
@@ -11,6 +12,8 @@ totalRouter.get("/:typeBoxes", (req, res) => {
       res.status(401).send("error retrieving boxes");
     });
 });
+
+// route getting the count of boxes
 totalRouter.get("/count", (req, res) => {
   getCountTotalBoxes()
     .then((result) => {
