@@ -32,7 +32,7 @@ fagotsRouter.get("/count", (req, res) => {
 
 // Route getting fagots
 fagotsRouter.get("/", (req, res) => {
-  getFagots()
+  getFagots(req.query.article)
     .then((result) => {
       res.status(200).send(result);
     })

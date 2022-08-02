@@ -22,12 +22,15 @@ const getCountFagots = () => {
     .then((result) => result[0][0]);
 };
 
-const getFagots = () => {
-  return db
-    .query(
-      "SELECT fagots.uuid, fagots.id, articles.name AS fagotType FROM fagots INNER JOIN articles ON fagots.id_article = articles.id ORDER BY uuid ASC"
-    )
-    .then((result) => result[0]);
+const getFagots = (query) => {
+  let sqlReq =
+    "SELECT fagots.uuid, fagots.id, articles.name AS fagotType,articles.id FROM fagots INNER JOIN articles ON fagots.id_article = articles.id";
+  const arrayQuery = [];
+  if (query) {
+    arrayQuery.push(query);
+    sqlReq += " WHERE articles.id = ?";
+  }
+  return db.query(sqlReq, arrayQuery).then((result) => result[0]);
 };
 
 /**
