@@ -3,6 +3,7 @@ const {
   getBoxInFagots,
   getCountFagots,
   getFagots,
+  getBoxesByFagotId,
 } = require("../models/fagots");
 
 // Route getting only boxes in fagots
@@ -31,13 +32,25 @@ fagotsRouter.get("/count", (req, res) => {
 
 // Route getting fagots
 fagotsRouter.get("/", (req, res) => {
-  getFagots()
+  getFagots(req.query.article)
     .then((result) => {
       res.status(200).send(result);
     })
     .catch((err) => {
       console.log(err);
       res.status(401).send("error request find fagots");
+    });
+});
+
+// Route getting boxes in a fagot
+fagotsRouter.get("/:id", (req, res) => {
+  getBoxesByFagotId(req.params.id)
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(401).send("error retrieving boxes by fagots");
     });
 });
 

@@ -4,7 +4,7 @@ const { getStockVrac, getCountVrac } = require("../models/vrac");
 
 // Route getting stock vrac
 vracRouter.get("/", (req, res) => {
-  getStockVrac()
+  getStockVrac(req.query.article)
     .then((result) => {
       if (result) {
         res.status(200).send(result);
