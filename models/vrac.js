@@ -20,10 +20,15 @@ const getStockVrac = (query) => {
  * Function getting the count of "caisses vrac"
  * @returns {promise}
  */
-const getCountVrac = () => {
-  return db
-    .query("SELECT count(*) AS nbVrac FROM caissesvrac WHERE id_fagot is NULL")
-    .then((result) => result[0][0]);
+const getCountVrac = (query) => {
+  let sqlReq =
+    "SELECT count(*) AS nbVrac FROM caissesvrac WHERE id_fagot is NULL";
+  let arrayQuery = [];
+  if (query) {
+    sqlReq += " AND id_article = ?";
+    arrayQuery.push(query);
+  }
+  return db.query(sqlReq, arrayQuery).then((result) => result[0][0]);
 };
 
 module.exports = { getStockVrac, getCountVrac };
