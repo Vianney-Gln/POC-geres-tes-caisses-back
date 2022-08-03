@@ -16,10 +16,14 @@ const getBoxInFagots = () => {
  * Function getting the number of fagots
  * @returns {promise}
  */
-const getCountFagots = () => {
-  return db
-    .query("SELECT count(*) AS nbFagots from fagots")
-    .then((result) => result[0][0]);
+const getCountFagots = (query) => {
+  let sqlReq = "SELECT count(*) AS nbFagots from fagots";
+  const arrayQuery = [];
+  if (query) {
+    sqlReq += " WHERE id_article = ?";
+    arrayQuery.push(query);
+  }
+  return db.query(sqlReq, arrayQuery).then((result) => result[0][0]);
 };
 
 const getFagots = (query) => {
