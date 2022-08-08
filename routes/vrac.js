@@ -19,7 +19,7 @@ vracRouter.get("/", (req, res) => {
 });
 // Route getting count "caisses vrac"
 vracRouter.get("/count", (req, res) => {
-  getCountVrac()
+  getCountVrac(req.query.article)
     .then((result) => {
       res.status(200).send(result);
     })

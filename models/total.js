@@ -11,10 +11,14 @@ const getTotalBoxes = (query) => {
   return db.query(sqlReq, arrayQuery).then((result) => result[0]);
 };
 
-const getCountTotalBoxes = () => {
-  return db
-    .query("SELECT count(*) AS numberTotal FROM caissesvrac")
-    .then((result) => result[0][0]);
+const getCountTotalBoxes = (query) => {
+  let sqlReq = "SELECT count(*) AS numberTotal FROM caissesvrac";
+  let arrayQuery = [];
+  if (query) {
+    sqlReq += " WHERE id_article = ?";
+    arrayQuery.push(query);
+  }
+  return db.query(sqlReq, arrayQuery).then((result) => result[0][0]);
 };
 
 module.exports = { getTotalBoxes, getCountTotalBoxes };
