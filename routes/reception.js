@@ -1,9 +1,11 @@
 const receptionRouter = require("express").Router();
 // Models
 const { sendReception } = require("../models/reception");
+// Middlewares
+const { runValidateReception } = require("../middlewares/reception");
 
 // Route sending a reception of boxes into db
-receptionRouter.post("/", (req, res) => {
+receptionRouter.post("/", runValidateReception, (req, res) => {
   sendReception(req.body).then((result) => {
     if (result.length) {
       res.status(203).send("reception sended");
