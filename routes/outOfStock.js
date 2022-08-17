@@ -1,8 +1,15 @@
 const outOfStockRouter = require("express").Router();
+const { deleteRows } = require("../models/outOfStock");
 
 outOfStockRouter.delete("/", (req, res) => {
-  console.log(req.body);
-  // Pour chaque id lancer model, puis envoyer le resultat
+  deleteRows(req.body)
+    .then(() => {
+      res.status(203).send("rows deleted successly");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send("error while delete");
+    });
 });
 
 module.exports = outOfStockRouter;
