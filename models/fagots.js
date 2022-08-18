@@ -28,7 +28,7 @@ const getCountFagots = (query) => {
 
 const getFagots = (query) => {
   let sqlReq =
-    "SELECT fagots.uuid, fagots.id, articles.name AS fagotType,articles.id FROM fagots INNER JOIN articles ON fagots.id_article = articles.id";
+    "SELECT fagots.uuid, fagots.id AS fagotId, articles.name AS fagotType,articles.id FROM fagots INNER JOIN articles ON fagots.id_article = articles.id";
   const arrayQuery = [];
   if (query) {
     arrayQuery.push(query);
