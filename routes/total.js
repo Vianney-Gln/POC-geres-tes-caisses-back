@@ -15,7 +15,7 @@ totalRouter.get("/", (req, res) => {
 
 // route getting the count of boxes
 totalRouter.get("/count", (req, res) => {
-  getCountTotalBoxes()
+  getCountTotalBoxes(req.query.article)
     .then((result) => {
       res.status(200).send(result);
     })

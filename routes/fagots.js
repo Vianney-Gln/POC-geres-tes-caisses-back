@@ -20,7 +20,7 @@ fagotsRouter.get("/box-in-fagots", (req, res) => {
 
 // Route getting the number of fagots;
 fagotsRouter.get("/count", (req, res) => {
-  getCountFagots()
+  getCountFagots(req.query.article)
     .then((result) => {
       res.status(200).send(result);
     })
