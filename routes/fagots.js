@@ -4,6 +4,7 @@ const {
   getCountFagots,
   getFagots,
   getBoxesByFagotId,
+  getNumberBoxesByFagot,
 } = require("../models/fagots");
 
 // Route getting only boxes in fagots
@@ -51,6 +52,18 @@ fagotsRouter.get("/:id", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(401).send("error retrieving boxes by fagots");
+    });
+});
+
+// Route getting the number of boxes from one fagot
+fagotsRouter.get("/number-box-in-fagots/:id", (req, res) => {
+  getNumberBoxesByFagot(req.params.id)
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(404);
     });
 });
 

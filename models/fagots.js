@@ -51,9 +51,23 @@ const getBoxesByFagotId = (id) => {
     .then((result) => result[0]);
 };
 
+/**
+ * Function getting the number of boxes into one fagot
+ * @param {number} idFagot
+ * @returns {promise}
+ */
+const getNumberBoxesByFagot = (idFagot) => {
+  return db
+    .query("SELECT COUNT(*) AS nbBoxes FROM caissesvrac WHERE id_fagot = ?", [
+      idFagot,
+    ])
+    .then((result) => result[0][0]);
+};
+
 module.exports = {
   getBoxInFagots,
   getCountFagots,
   getFagots,
   getBoxesByFagotId,
+  getNumberBoxesByFagot,
 };
