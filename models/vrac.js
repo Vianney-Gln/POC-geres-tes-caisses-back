@@ -7,7 +7,7 @@ const db = connection.promise();
  */
 const getStockVrac = (query) => {
   let sqlReq =
-    "SELECT caissesvrac.uuid,articles.name FROM caissesvrac INNER JOIN articles ON caissesvrac.id_article = articles.id WHERE id_fagot is NULL";
+    "SELECT caissesvrac.id, caissesvrac.uuid,articles.name FROM caissesvrac INNER JOIN articles ON caissesvrac.id_article = articles.id WHERE id_fagot is NULL";
   const arrayQuery = [];
   if (query) {
     sqlReq += " AND articles.id = ?";
