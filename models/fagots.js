@@ -64,10 +64,25 @@ const getNumberBoxesByFagot = (idFagot) => {
     .then((result) => result[0][0]);
 };
 
+/**
+ * Function creating a new empty fagot
+ * @param {object} body
+ * @returns {promise}
+ */
+const createOneFagot = (body) => {
+  return db
+    .query("INSERT INTO fagots (uuid,id_article) VALUES (?,?)", [
+      body.uuid,
+      body.id_article,
+    ])
+    .then((result) => result[0].insertId);
+};
+
 module.exports = {
   getBoxInFagots,
   getCountFagots,
   getFagots,
   getBoxesByFagotId,
   getNumberBoxesByFagot,
+  createOneFagot,
 };

@@ -5,6 +5,7 @@ const {
   getFagots,
   getBoxesByFagotId,
   getNumberBoxesByFagot,
+  createOneFagot,
 } = require("../models/fagots");
 
 // Route getting only boxes in fagots
@@ -64,6 +65,18 @@ fagotsRouter.get("/number-box-in-fagots/:id", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.sendStatus(404);
+    });
+});
+
+// Route creating a new empty fagot
+fagotsRouter.post("/", (req, res) => {
+  createOneFagot(req.body)
+    .then((result) => {
+      res.status(203).send(`fagot with id ${result} created`);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send("error creating fagot");
     });
 });
 
