@@ -78,6 +78,17 @@ const createOneFagot = (body) => {
     .then((result) => result[0].insertId);
 };
 
+/**
+ * Function deletting a fagot by his id
+ * @param {number} id
+ * @returns
+ */
+const deleteFagotById = (id) => {
+  return db
+    .query("DELETE FROM fagots WHERE id = ?", [id])
+    .then((result) => result[0].affectedRows);
+};
+
 module.exports = {
   getBoxInFagots,
   getCountFagots,
@@ -85,4 +96,5 @@ module.exports = {
   getBoxesByFagotId,
   getNumberBoxesByFagot,
   createOneFagot,
+  deleteFagotById,
 };

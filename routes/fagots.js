@@ -6,6 +6,7 @@ const {
   getBoxesByFagotId,
   getNumberBoxesByFagot,
   createOneFagot,
+  deleteFagotById,
 } = require("../models/fagots");
 
 // Route getting only boxes in fagots
@@ -78,6 +79,26 @@ fagotsRouter.post("/", (req, res) => {
       console.log(err);
       res.status(400).send("error creating fagot");
     });
+});
+
+// Route deleting one fagot by id, if this fagot contain boxes, update the id_fagot value as NULL
+fagotsRouter.delete("/:id", (req, res) => {
+  deleteFagotById(req.params.id)
+    .then((result) => {
+      console.log(result);
+      if (result) {
+        res.status(204).send();
+      } else {
+        res.status(404).send("this fagot does not exist");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send("error deleting this fagot");
+    });
+
+  // get this fagot and check if boxes inside
+  // if boxes inside update to Null the id_fagot value and delete this fagot
 });
 
 module.exports = fagotsRouter;
