@@ -45,7 +45,7 @@ const getFagots = (query) => {
 const getBoxesByFagotId = (id) => {
   return db
     .query(
-      "SELECT articles.name,caissesvrac.uuid AS idCaisse,fagots.uuid AS idFagot FROM caissesvrac INNER JOIN fagots ON caissesvrac.id_fagot = fagots.id INNER JOIN articles ON caissesvrac.id_article = articles.id WHERE caissesvrac.id_fagot = ? ORDER BY idCaisse ASC",
+      "SELECT articles.name,caissesvrac.uuid AS idCaisse,fagots.uuid AS idFagot,caissesvrac.id_fagot AS fagotId FROM caissesvrac INNER JOIN fagots ON caissesvrac.id_fagot = fagots.id INNER JOIN articles ON caissesvrac.id_article = articles.id WHERE caissesvrac.id_fagot = ? ORDER BY idCaisse ASC",
       [id]
     )
     .then((result) => result[0]);
@@ -89,6 +89,19 @@ const deleteFagotById = (id) => {
     .then((result) => result[0].affectedRows);
 };
 
+/**
+ * Function updating fields id_fagots to Null
+ * @param {number} idFagot
+ * @returns
+ */
+const updateIdFagotToNull = (idFagot) => {
+  return db
+    .query("UPDATE caissesvrac SET id_fagot = NULL WHERE id_fagot = ?", [
+      idFagot,
+    ])
+    .then((result) => result[0].affectedRows);
+};
+
 module.exports = {
   getBoxInFagots,
   getCountFagots,
@@ -97,4 +110,5 @@ module.exports = {
   getNumberBoxesByFagot,
   createOneFagot,
   deleteFagotById,
+  updateIdFagotToNull,
 };
