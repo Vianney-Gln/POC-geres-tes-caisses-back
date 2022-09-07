@@ -9,6 +9,7 @@ const {
   deleteFagotById,
 } = require("../models/fagots");
 const { checkBoxesInFagot } = require("../middlewares/fagots");
+const { checkIfBundleExist } = require("../middlewares/reception");
 
 // Route getting only boxes in fagots
 fagotsRouter.get("/box-in-fagots", (req, res) => {
@@ -71,7 +72,7 @@ fagotsRouter.get("/number-box-in-fagots/:id", (req, res) => {
 });
 
 // Route creating a new empty fagot
-fagotsRouter.post("/", (req, res) => {
+fagotsRouter.post("/", checkIfBundleExist, (req, res) => {
   createOneFagot(req.body)
     .then((result) => {
       res.status(203).send(`fagot with id ${result} created`);
