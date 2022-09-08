@@ -7,6 +7,7 @@ const {
   getNumberBoxesByFagot,
   createOneFagot,
   deleteFagotById,
+  getInfosFagotById,
 } = require("../models/fagots");
 const { checkBoxesInFagot } = require("../middlewares/fagots");
 const { checkIfBundleExist } = require("../middlewares/reception");
@@ -56,6 +57,18 @@ fagotsRouter.get("/:id", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(401).send("error retrieving boxes by fagots");
+    });
+});
+
+// Route getting all infos from one fagot by his id
+fagotsRouter.get("/info/:id", (req, res) => {
+  getInfosFagotById(req.params.id)
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).send("not found");
     });
 });
 

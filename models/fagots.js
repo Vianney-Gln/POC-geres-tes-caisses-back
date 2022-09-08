@@ -102,6 +102,17 @@ const updateIdFagotToNull = (idFagot) => {
     .then((result) => result[0].affectedRows);
 };
 
+/**
+ * Function getting all infos from one fagot by his id
+ * @param {number} id
+ * @returns
+ */
+const getInfosFagotById = (id) => {
+  return db
+    .query("SELECT * FROM fagots WHERE id = ?", [id])
+    .then((result) => result[0][0]);
+};
+
 module.exports = {
   getBoxInFagots,
   getCountFagots,
@@ -111,4 +122,5 @@ module.exports = {
   createOneFagot,
   deleteFagotById,
   updateIdFagotToNull,
+  getInfosFagotById,
 };
