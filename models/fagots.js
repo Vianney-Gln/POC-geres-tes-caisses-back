@@ -109,7 +109,10 @@ const updateIdFagotToNull = (idFagot) => {
  */
 const getInfosFagotById = (id) => {
   return db
-    .query("SELECT * FROM fagots WHERE id = ?", [id])
+    .query(
+      "SELECT fagots.id,fagots.uuid,articles.name FROM fagots INNER JOIN articles ON fagots.id_article = articles.id WHERE fagots.id = ?",
+      [id]
+    )
     .then((result) => result[0][0]);
 };
 
