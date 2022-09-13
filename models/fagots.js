@@ -116,6 +116,20 @@ const getInfosFagotById = (id) => {
     .then((result) => result[0][0]);
 };
 
+/**
+ * Function updating the id_fagot from boxes in the caissesvrac table
+ * @param {array} boxes
+ * @param {number} idFagot
+ * @returns
+ */
+const updateIdFagot = (boxes, idFagot) => {
+  const sql = "UPDATE caissesvrac SET id_fagot = ? WHERE id = ?";
+  const promises = boxes.map((boxe) => {
+    return db.query(sql, [idFagot, boxe.id]).then((result) => result[0]);
+  });
+  return Promise.all(promises).then((result) => result);
+};
+
 module.exports = {
   getBoxInFagots,
   getCountFagots,
@@ -126,4 +140,5 @@ module.exports = {
   deleteFagotById,
   updateIdFagotToNull,
   getInfosFagotById,
+  updateIdFagot,
 };

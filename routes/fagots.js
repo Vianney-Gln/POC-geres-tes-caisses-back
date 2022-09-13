@@ -8,8 +8,9 @@ const {
   createOneFagot,
   deleteFagotById,
   getInfosFagotById,
+  updateIdFagot,
 } = require("../models/fagots");
-const { checkBoxesInFagot } = require("../middlewares/fagots");
+const { checkBoxesInFagot, checkBoxesSizes } = require("../middlewares/fagots");
 const { checkIfBundleExist } = require("../middlewares/reception");
 
 // Route getting only boxes in fagots
@@ -109,6 +110,18 @@ fagotsRouter.delete("/:id", checkBoxesInFagot, (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(400).send("error deleting this fagot");
+    });
+});
+
+// Route adding boxes to an existing fagot by update their id_fagot field
+fagotsRouter.put("/boxes-to-bundle/:id", checkBoxesSizes, (req, res) => {
+  updateIdFagot(req.verifiedBoxes, req.params.id)
+    .then(() => {
+      res.status(201).send("update done correctly");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send("error updating boxes");
     });
 });
 
