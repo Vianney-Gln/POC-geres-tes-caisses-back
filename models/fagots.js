@@ -90,7 +90,7 @@ const deleteFagotById = (id) => {
 };
 
 /**
- * Function updating fields id_fagots to Null
+ * Function updating fields id_fagots to Null for all boxes in a fagot
  * @param {number} idFagot
  * @returns
  */
@@ -130,6 +130,17 @@ const updateIdFagot = (boxes, idFagot) => {
   return Promise.all(promises).then((result) => result);
 };
 
+/**
+ * Function update the id_fagot field for a boxe to NULL by its id
+ * @param {number} id
+ * @returns
+ */
+const updateIdFagotToNullForOneBoxe = (id) => {
+  return db
+    .query("UPDATE caissesvrac SET id_fagot = NULL WHERE id = ?", [id])
+    .then((result) => result[0].affectedRows);
+};
+
 module.exports = {
   getBoxInFagots,
   getCountFagots,
@@ -141,4 +152,5 @@ module.exports = {
   updateIdFagotToNull,
   getInfosFagotById,
   updateIdFagot,
+  updateIdFagotToNullForOneBoxe,
 };

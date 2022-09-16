@@ -9,6 +9,7 @@ const {
   deleteFagotById,
   getInfosFagotById,
   updateIdFagot,
+  updateIdFagotToNullForOneBoxe,
 } = require("../models/fagots");
 const { checkBoxesInFagot, checkBoxesSizes } = require("../middlewares/fagots");
 const { checkIfBundleExist } = require("../middlewares/reception");
@@ -122,6 +123,17 @@ fagotsRouter.put("/boxes-to-bundle/:id", checkBoxesSizes, (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(400).send("error updating boxes");
+    });
+});
+
+// Route update the id_fagot field for a boxe to NULL by its id
+fagotsRouter.put("/remove-to-bundle/:id", (req, res) => {
+  updateIdFagotToNullForOneBoxe(req.params.id)
+    .then((result) => {
+      res.status(201).send(`${result} rows updated`);
+    })
+    .catch(() => {
+      res.status(400).send("error during update");
     });
 });
 
