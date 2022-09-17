@@ -2,7 +2,7 @@ const db = require("../db-config").promise();
 
 const getTotalBoxes = (query) => {
   let sqlReq =
-    "SELECT caissesvrac.id, caissesvrac.uuid,articles.name,caissesvrac.id_fagot AS idFagot from caissesvrac INNER JOIN articles ON caissesvrac.id_article = articles.id";
+    "SELECT caissesvrac.id, caissesvrac.uuid,articles.name,caissesvrac.id_fagot AS idFagot,fagots.uuid AS nameFagot from caissesvrac INNER JOIN articles ON caissesvrac.id_article = articles.id LEFT JOIN fagots ON caissesvrac.id_fagot = fagots.id";
   const arrayQuery = [];
   if (query) {
     sqlReq += " WHERE articles.id = ?";
