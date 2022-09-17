@@ -28,7 +28,7 @@ const getCountFagots = (query) => {
 
 const getFagots = (query) => {
   let sqlReq =
-    "SELECT fagots.uuid, fagots.id, articles.name AS fagotType,articles.id FROM fagots INNER JOIN articles ON fagots.id_article = articles.id";
+    "SELECT fagots.uuid, fagots.id AS fagotId, articles.name AS fagotType,articles.id FROM fagots INNER JOIN articles ON fagots.id_article = articles.id";
   const arrayQuery = [];
   if (query) {
     arrayQuery.push(query);
@@ -45,10 +45,100 @@ const getFagots = (query) => {
 const getBoxesByFagotId = (id) => {
   return db
     .query(
-      "SELECT articles.name,caissesvrac.uuid AS idCaisse,fagots.uuid AS idFagot FROM caissesvrac INNER JOIN fagots ON caissesvrac.id_fagot = fagots.id INNER JOIN articles ON caissesvrac.id_article = articles.id WHERE caissesvrac.id_fagot = ? ORDER BY idCaisse ASC",
+      "SELECT articles.name,caissesvrac.id AS uid,caissesvrac.uuid AS idCaisse,fagots.uuid AS idFagot,caissesvrac.id_fagot AS fagotId FROM caissesvrac INNER JOIN fagots ON caissesvrac.id_fagot = fagots.id INNER JOIN articles ON caissesvrac.id_article = articles.id WHERE caissesvrac.id_fagot = ? ORDER BY idCaisse ASC",
       [id]
     )
     .then((result) => result[0]);
+};
+
+/**
+ * Function getting the number of boxes into one fagot
+ * @param {number} idFagot
+ * @returns {promise}
+ */
+const getNumberBoxesByFagot = (idFagot) => {
+  return db
+    .query("SELECT COUNT(*) AS nbBoxes FROM caissesvrac WHERE id_fagot = ?", [
+      idFagot,
+    ])
+    .then((result) => result[0][0]);
+};
+
+/**
+ * Function creating a new empty fagot
+ * @param {object} body
+ * @returns {promise}
+ */
+const createOneFagot = (body) => {
+  return db
+    .query("INSERT INTO fagots (uuid,id_article) VALUES (?,?)", [
+      body.uuid,
+      body.id_article,
+    ])
+    .then((result) => result[0].insertId);
+};
+
+/**
+ * Function deletting a fagot by his id
+ * @param {number} id
+ * @returns
+ */
+const deleteFagotById = (id) => {
+  return db
+    .query("DELETE FROM fagots WHERE id = ?", [id])
+    .then((result) => result[0].affectedRows);
+};
+
+/**
+ * Function updating fields id_fagots to Null for all boxes in a fagot
+ * @param {number} idFagot
+ * @returns
+ */
+const updateIdFagotToNull = (idFagot) => {
+  return db
+    .query("UPDATE caissesvrac SET id_fagot = NULL WHERE id_fagot = ?", [
+      idFagot,
+    ])
+    .then((result) => result[0].affectedRows);
+};
+
+/**
+ * Function getting all infos from one fagot by his id
+ * @param {number} id
+ * @returns
+ */
+const getInfosFagotById = (id) => {
+  return db
+    .query(
+      "SELECT fagots.id,fagots.uuid,articles.name FROM fagots INNER JOIN articles ON fagots.id_article = articles.id WHERE fagots.id = ?",
+      [id]
+    )
+    .then((result) => result[0][0]);
+};
+
+/**
+ * Function updating the id_fagot from boxes in the caissesvrac table
+ * @param {array} boxes
+ * @param {number} idFagot
+ * @returns
+ */
+const updateIdFagot = (boxes, idFagot) => {
+  const sql = "UPDATE caissesvrac SET id_fagot = ? WHERE id = ?";
+  const promises = boxes.map((boxe) => {
+    return db.query(sql, [idFagot, boxe.id]).then((result) => result[0]);
+  });
+  return Promise.all(promises).then((result) => result);
+};
+
+/**
+ * Function update the id_fagot field for a boxe to NULL by its id
+ * @param {number} id
+ * @returns
+ */
+const updateIdFagotToNullForOneBoxe = (id) => {
+  return db
+    .query("UPDATE caissesvrac SET id_fagot = NULL WHERE id = ?", [id])
+    .then((result) => result[0].affectedRows);
 };
 
 module.exports = {
@@ -56,4 +146,11 @@ module.exports = {
   getCountFagots,
   getFagots,
   getBoxesByFagotId,
+  getNumberBoxesByFagot,
+  createOneFagot,
+  deleteFagotById,
+  updateIdFagotToNull,
+  getInfosFagotById,
+  updateIdFagot,
+  updateIdFagotToNullForOneBoxe,
 };
