@@ -13,6 +13,7 @@ const {
 } = require("../models/fagots");
 const { checkBoxesInFagot, checkBoxesSizes } = require("../middlewares/fagots");
 const { checkIfBundleExist } = require("../middlewares/reception");
+const { runValidateFormCreateBundle } = require("../middlewares/fagots");
 
 // Route getting only boxes in fagots
 fagotsRouter.get("/box-in-fagots", (req, res) => {
@@ -87,16 +88,21 @@ fagotsRouter.get("/number-box-in-fagots/:id", (req, res) => {
 });
 
 // Route creating a new empty fagot
-fagotsRouter.post("/", checkIfBundleExist, (req, res) => {
-  createOneFagot(req.body)
-    .then((result) => {
-      res.status(203).send(`fagot with id ${result} created`);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(400).send("error creating fagot");
-    });
-});
+fagotsRouter.post(
+  "/",
+  checkIfBundleExist,
+  runValidateFormCreateBundle,
+  (req, res) => {
+    createOneFagot(req.body)
+      .then((result) => {
+        res.status(203).send(`fagot with id ${result} created`);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).send("error creating fagot");
+      });
+  }
+);
 
 // Route deleting one fagot by id, if this fagot contain boxes, update the id_fagot value as NULL
 fagotsRouter.delete("/:id", checkBoxesInFagot, (req, res) => {

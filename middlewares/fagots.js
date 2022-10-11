@@ -3,6 +3,7 @@ const {
   updateIdFagotToNull,
   getInfosFagotById,
 } = require("../models/fagots");
+const { validateFormCreateBundle } = require("../helpers/formVerifs");
 
 // Function checking if a fagot contain boxes.
 const checkBoxesInFagot = (req, res, next) => {
@@ -46,4 +47,19 @@ const checkBoxesSizes = (req, res, next) => {
     .catch(() => res.status(404).send("error retrieving infos fagot"));
 };
 
-module.exports = { checkBoxesInFagot, checkBoxesSizes };
+const runValidateFormCreateBundle = (req, res, next) => {
+  const body = req.body;
+  const error = validateFormCreateBundle(body);
+
+  if (error) {
+    res.status(401).send(error.details);
+  } else {
+    next();
+  }
+};
+
+module.exports = {
+  checkBoxesInFagot,
+  checkBoxesSizes,
+  runValidateFormCreateBundle,
+};
