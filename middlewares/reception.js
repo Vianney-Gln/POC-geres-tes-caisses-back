@@ -1,4 +1,4 @@
-const validateReception = require("../helpers/formVerifs");
+const { validateReception } = require("../helpers/formVerifs");
 const { getFagots } = require("../models/fagots");
 const { getTotalBoxes } = require("../models/total");
 
